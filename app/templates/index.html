@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}VietTrans - Bộ thẻ QR Hỗ trợ Biên dịch Văn hóa Việt Nam sang Tiếng Anh{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 60px 20px; text-align: center;">
+    <span class="badge badge-coral" style="margin-bottom: 16px; font-size: 0.95rem;">🇻🇳 Lan tỏa văn hóa Việt qua ngôn ngữ Anh</span>
+    <h1 style="font-size: 2.8rem; margin-bottom: 18px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        Bộ Thẻ QR Hỗ Trợ Biên Dịch Các Yếu Tố Văn Hóa Việt Nam Sang Tiếng Anh
+    </h1>
+    <p style="font-size: 1.15rem; color: var(--color-text-muted); max-width: 680px; margin: 0 auto 30px;">
+        Kết hợp thẻ học trực quan với mã QR để tra cứu phương pháp dịch, giải thích nghĩa sâu sắc, chiến lược dịch và bài tập thực hành.
+    </p>
+
+    <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px;">
+        <a href="/cards" class="btn btn-primary" style="padding: 12px 28px; font-size: 1.05rem;">
+            📚 Khám phá bộ thẻ
+        </a>
+        <a href="/c/li-xi" class="btn btn-coral" style="padding: 12px 28px; font-size: 1.05rem;">
+            📱 Quét thử thẻ "Lì xì"
+        </a>
+    </div>
+
+    <!-- Danh sách thẻ mẫu nổi bật -->
+    <div style="max-width: 900px; margin: 0 auto; text-align: left;">
+        <h2 style="font-size: 1.6rem; margin-bottom: 20px; text-align: center;">Thẻ học thuật mẫu</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;">
+            {% for c in featured_cards %}
+            <a href="/c/{{ c.slug }}" style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px; display: block; box-shadow: var(--shadow-subtle); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                <span style="font-size: 0.8rem; color: var(--color-coral); font-weight: 600;">{{ c.category_label }}</span>
+                <h3 style="font-size: 1.35rem; color: var(--color-red-tet); margin: 6px 0;">{{ c.term_vi }}</h3>
+                <p style="font-size: 0.9rem; color: var(--color-primary); font-weight: 500; font-style: italic;">{{ c.suggested_translation }}</p>
+                <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--color-text-muted);">
+                    <span>Quét mã QR ➔</span>
+                    <span>📱 {{ c.scan_count }} lượt</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

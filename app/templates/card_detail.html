@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}{{ card.term_vi }} ({{ card.category_label or 'Văn hóa Việt' }}) - VietTrans{% endblock %}
+{% block description %}Hướng dẫn dịch thuật thuật ngữ văn hóa "{{ card.term_vi }}": Cách dịch sang tiếng Anh, ghi chú văn hóa, chiến lược dịch và bài tập thực hành.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/card_detail.css">
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 15px; padding-bottom: 40px;">
+
+    <!-- Khung hiển thị mô phỏng điện thoại di động (Mobile-First Frame) -->
+    <article class="phone-wrapper" id="card-phone-screen">
+        
+        <!-- Thông báo nếu thẻ chưa duyệt học thuật -->
+        {% if not card.reviewed %}
+        <div class="pending-review-banner">
+            <span>ℹ️ {{ labels.ui.pending_review }}</span>
+            <span class="badge badge-pending">Chờ duyệt</span>
+        </div>
+        {% endif %}
+
+        <!-- 1. Header Banner của thẻ: Tên từ tiếng Việt màu đỏ + Nhóm + Nút Phát âm Tiếng Anh -->
+        <header class="card-header-banner">
+            <div class="term-top-row">
+                <div style="flex: 1;">
+                    <span class="term-category-badge">🏷️ {{ card.category_label or (card.category.name_vi if card.category else 'Văn hóa Việt') }}</span>
+                    <h1 class="term-main-title">{{ card.term_vi }}</h1>
+                    {% if card.tagline_en %}
+                    <p class="term-tagline">"{{ card.tagline_en }}"</p>
+                    {% endif %}
+                </div>
+
+                <!-- Nút phát âm (ưu tiên audio_path, fallback Web Speech API tiếng Anh chuẩn rõ ràng) -->
+                <button id="audio-play-btn" 
+                        class="audio-btn-circle" 
+                        data-audio-src="{{ card.audio_path or '' }}"
+                        data-term-vi="{{ card.term_vi }}"
+                        data-term-en="{{ card.suggested_translation }}"
+                        title="Phát âm tiếng Anh: {{ card.suggested_translation }}" 
+                        aria-label="Phát âm tiếng Anh: {{ card.suggested_translation }}">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 2. Ảnh Banner minh họa (SVG placeholder hoặc ảnh thật) -->
+        <div class="card-illustration-wrap">
+            {% if card.image_path %}
+                <img src="{{ card.image_path }}" alt="Minh họa {{ card.term_vi }}" loading="lazy">
+            {% else %}
+                <div class="card-illustration-placeholder">
+                    <!-- Icon minh họa tinh tế văn hóa Việt -->
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 48c12-16 28-16 40 0" />
+                        <path d="M32 16v24" />
+                        <circle cx="32" cy="14" r="6" />
+                        <path d="M20 32c4-6 8-8 12-8s8 2 12 8" />
+                    </svg>
+                    <span style="font-size: 0.88rem; font-weight: 500;">Hình ảnh minh họa: {{ card.term_vi }}</span>
+                    <span style="font-size: 0.75rem; color: var(--color-text-muted);">(Vị trí sẽ thay bằng ảnh chụp thực tế)</span>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- 3. Các khối nội dung văn hóa & dịch thuật (10 mục chuẩn theo thứ tự) -->
+        <div class="card-body-content">
+            
+            <!-- Khối 1: Suggested Translation -->
+            <section class="detail-block block-translation" aria-label="Gợi ý cách dịch tiếng Anh">
+                <div class="block-header">
+                    <div class="block-icon-badge">🔤</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.suggested_translation.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.suggested_translation.vi }}</div>
+                    </div>
+                </div>
+                <div class="translation-highlight">
+                    {{ card.suggested_translation }}
+                </div>
+            </section>
+
+            <!-- Khối 2: Meaning -->
+            <section class="detail-block block-meaning" aria-label="Giải thích nghĩa">
+                <div class="block-header">
+                    <div class="block-icon-badge">📖</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.meaning.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.meaning.vi }}</div>
+                    </div>
+                </div>
+                <p class="block-text">{{ card.meaning }}</p>
+            </section>
+
+            <!-- Khối 3: Cultural Note -->
+            <section class="detail-block block-culture" aria-label="Thông tin văn hóa liên quan">
+                <div class="block-header">
+                    <div class="block-icon-badge">🏮</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.cultural_note.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.cultural_note.vi }}</div>
+                    </div>
+                </div>
+                <p class="block-text">{{ card.cultural_note }}</p>
+            </section>
+
+            <!-- Khối 4: Translation Strategy -->
+            <section class="detail-block block-strategy" aria-label="Chiến lược dịch phù hợp">
+                <div class="block-header">
+                    <div class="block-icon-badge">🧭</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.translation_strategy.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.translation_strategy.vi }}</div>
+                    </div>
+                </div>
+                <p class="block-text">{{ card.translation_strategy }}</p>
+            </section>
+
+            <!-- Khối 5: Examples (Ngữ cảnh) -->
+            {% if card.examples %}
+            <section class="detail-block block-examples" aria-label="Ví dụ trong ngữ cảnh">
+                <div class="block-header">
+                    <div class="block-icon-badge">💬</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.example.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.example.vi }}</div>
+                    </div>
+                </div>
+                <div>
+                    {% for ex in card.examples %}
+                    <div class="example-item">
+                        <p class="example-vi">🇻🇳 {{ ex.sentence_vi }}</p>
+                        <p class="example-en">🇬🇧 {{ ex.sentence_en }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Khối 6: Common Mistake -->
+            {% if card.common_mistake %}
+            <section class="detail-block block-mistake" aria-label="Lỗi dịch thường gặp">
+                <div class="block-header">
+                    <div class="block-icon-badge">⚠️</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.common_mistake.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.common_mistake.vi }}</div>
+                    </div>
+                </div>
+                <div class="mistake-badge-pill">
+                    <span>✕ {{ card.common_mistake }}</span>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Khối 7: Translation Tip -->
+            {% if card.translation_tip %}
+            <section class="detail-block block-tip" aria-label="Lưu ý khi dịch">
+                <div class="block-header">
+                    <div class="block-icon-badge">💡</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.translation_tip.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.translation_tip.vi }}</div>
+                    </div>
+                </div>
+                <div class="tip-badge-pill">
+                    <span>✓ {{ card.translation_tip }}</span>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Khối 8: Mini Practice -->
+            {% if card.practice_items %}
+            {% for pr in card.practice_items %}
+            <section class="detail-block block-practice" aria-label="Bài luyện tập ngắn">
+                <div class="block-header">
+                    <div class="block-icon-badge">✍️</div>
+                    <div>
+                        <div class="block-title-en">{{ labels.card_sections.mini_practice.en }}</div>
+                        <div class="block-title-vi">{{ labels.card_sections.mini_practice.vi }}</div>
+                    </div>
+                </div>
+                
+                <p class="practice-prompt">{{ pr.prompt }}</p>
+
+                <!-- Ô nhập thử sức cho sinh viên -->
+                <input type="text" 
+                       class="practice-input" 
+                       placeholder="{{ labels.ui.your_translation_placeholder }}"
+                       aria-label="Nhập bản dịch thử nghiệm">
+
+                {% if pr.hint %}
+                <p style="font-size:0.85rem; color:var(--color-coral-dark); margin-bottom:8px;">
+                    <em>Gợi ý: {{ pr.hint }}</em>
+                </p>
+                {% endif %}
+
+                <!-- Nút bật / tắt gợi ý đáp án phía client -->
+                <button type="button" 
+                        class="practice-toggle-btn" 
+                        data-target="practice-answer-{{ pr.id or loop.index }}">
+                    Xem đáp án gợi ý ▼
+                </button>
+
+                <!-- Khung hiển thị đáp án ẩn -->
+                <div id="practice-answer-{{ pr.id or loop.index }}" class="practice-answer-box">
+                    <p style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:4px;">Đáp án gợi ý (Suggested Answer):</p>
+                    <p style="font-weight:600; color:var(--color-primary); font-size:0.95rem;">
+                        {{ pr.suggested_answer }}
+                    </p>
+                </div>
+            </section>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+
+        <!-- 4. Chân thẻ: Điều hướng Trước/Sau, Thẻ liên quan và Chia sẻ -->
+        <footer class="card-bottom-actions">
+            
+            <!-- Điều hướng chuyển thẻ Trước / Sau -->
+            <div class="nav-buttons-row">
+                {% if prev_card %}
+                <a href="/card/{{ prev_card.slug }}" class="btn btn-outline" style="padding: 8px 14px; font-size: 0.88rem;">
+                    ← {{ prev_card.term_vi }}
+                </a>
+                {% else %}
+                <span></span>
+                {% endif %}
+
+                <a href="/cards" class="btn btn-outline" style="padding: 8px 14px; font-size: 0.88rem;">
+                    📚 Thư viện
+                </a>
+
+                {% if next_card %}
+                <a href="/card/{{ next_card.slug }}" class="btn btn-outline" style="padding: 8px 14px; font-size: 0.88rem;">
+                    {{ next_card.term_vi }} →
+                </a>
+                {% else %}
+                <span></span>
+                {% endif %}
+            </div>
+
+            <!-- Chia sẻ & Thống kê lượt quét -->
+            <div class="share-action-row">
+                <button id="share-card-btn" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.85rem;">
+                    🔗 {{ labels.ui.share }}
+                </button>
+
+                <div class="scan-stats-badge" title="Số lần mã QR của thẻ đã được quét">
+                    <span>📱 {{ card.scan_count }} {{ labels.ui.scans }}</span>
+                </div>
+            </div>
+
+            <!-- Thẻ cùng nhóm văn hóa -->
+            {% if related_cards %}
+            <div class="related-cards-box">
+                <div class="related-title">{{ labels.ui.related_cards }}:</div>
+                <div class="related-list">
+                    {% for rc in related_cards %}
+                    <a href="/card/{{ rc.slug }}" class="related-chip">
+                        {{ rc.term_vi }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        </footer>
+
+    </article>
+
+</div>
+{% endblock %}

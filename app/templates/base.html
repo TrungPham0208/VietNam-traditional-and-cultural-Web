@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VietTrans - Lan tỏa văn hóa Việt qua ngôn ngữ Anh{% endblock %}</title>
+    <meta name="description" content="{% block description %}Hệ thống bộ thẻ QR hỗ trợ sinh viên ngành Ngôn ngữ Anh biên dịch các yếu tố văn hóa Việt Nam sang tiếng Anh chuẩn xác và học thuật.{% endblock %}">
+    
+    <!-- Open Graph SEO -->
+    <meta property="og:title" content="{% block og_title %}VietTrans - Bộ thẻ QR Biên dịch Văn hóa Việt{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Lan tỏa văn hóa Việt qua ngôn ngữ Anh - Học dịch trực quan với mã QR.{% endblock %}">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts hỗ trợ trọn vẹn tiếng Việt (Playfair Display & Be Vietnam Pro) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+
+    <!-- CSS Hệ thống -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header class="site-header">
+        <div class="container">
+            <nav class="navbar" aria-label="Main Navigation">
+                <a href="/" class="brand-logo" title="Trang chủ VietTrans">
+                    <!-- Inline SVG Hoa Sen cách điệu phong cách truyền thống (màu cam-hồng) -->
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Biểu tượng Hoa sen VietTrans">
+                        <defs>
+                            <linearGradient id="lotusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#F28C5B" />
+                                <stop offset="100%" stop-color="#F4A6B8" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Cánh sen trung tâm -->
+                        <path d="M50 15 C52 35 62 55 50 82 C38 55 48 35 50 15 Z" fill="url(#lotusGrad)" />
+                        <!-- Cánh sen trái -->
+                        <path d="M46 32 C35 45 22 62 38 78 C44 65 46 48 46 32 Z" fill="#F28C5B" opacity="0.9" />
+                        <!-- Cánh sen phải -->
+                        <path d="M54 32 C65 45 78 62 62 78 C56 65 54 48 54 32 Z" fill="#F4A6B8" opacity="0.9" />
+                        <!-- Cánh xòe ngoài cùng trái -->
+                        <path d="M38 52 C22 62 15 76 30 84 C38 74 38 62 38 52 Z" fill="#F28C5B" opacity="0.75" />
+                        <!-- Cánh xòe ngoài cùng phải -->
+                        <path d="M62 52 C78 62 85 76 70 84 C62 74 62 62 62 52 Z" fill="#F4A6B8" opacity="0.75" />
+                        <!-- Đài sen xanh ngọc -->
+                        <path d="M36 82 Q50 92 64 82 Q50 86 36 82 Z" fill="#1F5C3A" />
+                    </svg>
+                    <span>VietTrans</span>
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="/" class="nav-link">Trang chủ</a></li>
+                    <li><a href="/cards" class="nav-link">Thư viện thẻ</a></li>
+                    <li><a href="/cards?category=tet-le-hoi" class="nav-link">Tết & Lễ hội</a></li>
+                    <li><a href="/cards?category=am-thuc" class="nav-link">Ẩm thực</a></li>
+                    <li><a href="/admin" class="nav-link">Quản trị</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <!-- Nút chuyển đổi Dark/Light mode -->
+                    <button id="theme-toggle-btn" class="btn-icon" aria-label="Đổi giao diện sáng tối" title="Đổi giao diện sáng/tối">
+                        🌓
+                    </button>
+                    <!-- Nút mở menu trên Mobile -->
+                    <button class="mobile-toggle" aria-label="Mở menu di động">
+                        ☰
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="font-heading" style="color:#FFFFFF; margin-bottom:12px; font-size:1.4rem;">VietTrans</h3>
+                    <p style="margin-bottom:16px; max-width:400px; font-size:0.95rem; line-height:1.6;">
+                        "Lan tỏa văn hóa Việt qua ngôn ngữ Anh"<br>
+                        Hệ thống bộ thẻ học trực quan kết hợp mã QR hỗ trợ sinh viên ngành Ngôn ngữ Anh và người yêu văn hóa tra cứu, luyện tập dịch thuật chuyên sâu.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color:#F28C5B; margin-bottom:14px; font-size:1.05rem;">Khám phá nhanh</h4>
+                    <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:0.92rem;">
+                        <li><a href="/cards">Tất cả thẻ văn hóa</a></li>
+                        <li><a href="/card/li-xi">Thẻ mẫu: Lì xì</a></li>
+                        <li><a href="/card/ao-dai">Thẻ mẫu: Áo dài</a></li>
+                        <li><a href="/card/banh-chung">Thẻ mẫu: Bánh chưng</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color:#F28C5B; margin-bottom:14px; font-size:1.05rem;">Dành cho Giảng viên</h4>
+                    <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:0.92rem;">
+                        <li><a href="/admin">Khu vực Giảng viên (Admin)</a></li>
+                        <li><a href="/#product-suite">Hướng dẫn sử dụng (Teacher's Guide)</a></li>
+                        <li><a href="/docs" target="_blank">Tài liệu API (FastAPI Docs)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 VietTrans Project. Giữ toàn quyền bản quyền nội dung học thuật văn hóa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/main.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

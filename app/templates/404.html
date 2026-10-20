@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Không tìm thấy trang - VietTrans{% endblock %}
+
+{% block content %}
+<div class="container text-center" style="padding: 80px 20px;">
+    <h1 style="font-size: 4rem; color: var(--color-red-tet); margin-bottom: 10px;">404</h1>
+    <h2 style="font-size: 1.8rem; margin-bottom: 20px;">Không tìm thấy nội dung</h2>
+    <p style="color: var(--color-text-muted); max-width: 500px; margin: 0 auto 30px;">
+        Thẻ văn hóa hoặc đường dẫn bạn vừa quét không tồn tại hoặc đã được thay đổi địa chỉ.
+    </p>
+    <a href="/cards" class="btn btn-primary">📚 Xem Thư viện thẻ văn hóa</a>
+</div>
+{% endblock %}

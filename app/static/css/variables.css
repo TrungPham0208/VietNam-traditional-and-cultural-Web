@@ -1,0 +1,64 @@
+/* Bảng màu và Biến hệ thống VietTrans */
+:root {
+    /* Màu sắc truyền thống văn hóa Việt */
+    --color-primary: #1F5C3A;         /* Xanh lá đậm chủ đạo */
+    --color-primary-dark: #153F28;    /* Xanh sẫm nhấn hover */
+    --color-primary-light: #EBF4EF;   /* Xanh nhạt nền phụ */
+    
+    --color-bg-cream: #FFF8EC;        /* Nền kem / be ấm */
+    --color-bg-card: #FFFFFF;         /* Nền thẻ trắng ngà */
+    --color-bg-section: #FAF4E8;      /* Nền khu vực */
+    
+    --color-coral: #F28C5B;           /* Cam / San hô tươi sáng */
+    --color-coral-dark: #D97341;      /* Cam đậm khi hover */
+    --color-coral-light: #FEF3EC;     /* Cam nhạt nền nhấn */
+    
+    --color-red-tet: #D63B2F;         /* Đỏ Tết / son chu sa */
+    --color-red-light: #FDEEEB;       /* Đỏ nhạt khối lỗi thường gặp */
+    
+    --color-lotus-pink: #F4A6B8;      /* Hồng sen thanh tao */
+    --color-lotus-light: #FCF2F5;     /* Hồng nhạt nền */
+    
+    --color-tip-green: #2E7D32;       /* Xanh lá tip dịch thuật */
+    --color-tip-light: #E8F5E9;       /* Xanh nhạt nền tip */
+    
+    --color-text-main: #2B2B2B;       /* Chữ chính tương phản cao */
+    --color-text-muted: #5E5B54;      /* Chữ phụ giải thích */
+    --color-border: #EADBCA;          /* Đường viền ấm áp */
+    
+    /* Phông chữ hỗ trợ dấu tiếng Việt */
+    --font-heading: 'Playfair Display', 'Lora', Georgia, serif;
+    --font-body: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Hiệu ứng đổ bóng */
+    --shadow-subtle: 0 2px 8px rgba(31, 92, 58, 0.05);
+    --shadow-card: 0 8px 24px rgba(31, 92, 58, 0.08);
+    --shadow-elevated: 0 16px 36px rgba(0, 0, 0, 0.12);
+    
+    /* Bo góc */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-card: 18px;
+    --radius-pill: 9999px;
+    
+    /* Chuyển động */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Chế độ Dark mode (vẫn giữ tông ấm cúng) */
+[data-theme="dark"] {
+    --color-bg-cream: #181C19;
+    --color-bg-card: #222723;
+    --color-bg-section: #1D231E;
+    --color-text-main: #F3F1ED;
+    --color-text-muted: #A8A59C;
+    --color-border: #333C35;
+    --color-primary-light: #203527;
+    --color-coral-light: #38281F;
+    --color-red-light: #381E1C;
+    --color-lotus-light: #332025;
+    --color-tip-light: #1C3320;
+    --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Thư viện thẻ văn hóa - VietTrans{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 40px 20px;">
+    <h1 style="font-size: 2.2rem; margin-bottom: 8px;">Thư viện Thẻ Văn hóa Việt Nam</h1>
+    <p style="color: var(--color-text-muted); margin-bottom: 30px;">
+        Tra cứu cách biên dịch các yếu tố văn hóa sang tiếng Anh theo từng chủ đề hoặc từ khóa.
+    </p>
+
+    <!-- Ô tìm kiếm và bộ lọc nhanh -->
+    <div style="display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;">
+        <input type="text" id="library-search-input" placeholder="Tìm kiếm từ khóa (ví dụ: li xi, banh chung, ao dai)..." style="flex: 1; min-width: 280px; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); font-size: 1rem;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="category-filters">
+            <a href="/cards" class="btn btn-outline" style="font-size: 0.9rem;">Tất cả</a>
+            {% for cat in categories %}
+            <a href="/cards?category={{ cat.slug }}" class="btn btn-outline" style="font-size: 0.9rem;">
+                {{ cat.name_vi }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Khu vực danh sách thẻ -->
+    <div id="cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+        <!-- Đổ dữ liệu từ API hoặc SSR -->
+    </div>
+</div>
+{% endblock %}
